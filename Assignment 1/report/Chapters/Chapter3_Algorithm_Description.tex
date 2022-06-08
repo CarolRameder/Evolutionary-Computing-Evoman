@@ -1,0 +1,25 @@
+\section{Algorithm Description}
+% We would like to be sure you understand the EA, and you're not simply running the code of a framework. This means explaining all of its evolutionary mechanisms: initialization, parent selection, crossover, mutation, survival selection, maintenance of diversity, etc.
+
+Two EAs are used to train the AI agent that plays the game. The trainable parameters, the weights and the biases, of the single-layer Neural Network represent the genotype of each individual. Thus, each one of them represents a configuration of the model, that can be evaluated accordingly to its performance during a game. 
+Both of our algorithms use the standard genetic operators for evolution. We use fitness proportionate selection for deciding which individuals are chosen for reproduction. Therefore, the optimal features are propagated to the next generation, most likely leading to an improvement.
+
+Crossover represents the reproduction process, in which the genetic information of the parents is combined. The resulted offspring represent the population of the next generation.
+Mutation consists of random tweaks of the offspring, which provides the diversity of the population. By doing this, the search space of our problem is well explored. 
+
+Initially, every gene in the genotype of an individual from the first generation consists of a random float number from the [-1,1] interval. Therefore, the algorithm starts with no human knowledge about the game or environment.
+
+In the main loop of the algorithm, for each new generation, we select the parents for breeding green using the tournament selection and then perform the multi-parent crossover for obtaining the offspring. To create diversity, one of the two mutation methods (self-adaptive and Gaussian) is applied to the offspring for each algorithm. We do not use the Survival Selection operator, as both used algorithms are based on a constant number of individuals in a population that produce the same number of offspring for the next generation. The results consist of the fitness value of the current population, that will be used in the selection process of the next generation.
+\\
+The quality of individuals is measured using the so-called \emph{fitness}. In our setup, we are using the provided fitness function of the framework, defined as
+\begin{equation}
+\label{fitness}
+\textit { fitness }=0.9 *\left(100-e_{e}\right)+0.1 * e_{p}-\log t
+\end{equation}
+In the stated above equation, $e_e$ represents the enemy's energy and $e_p$ the player's energy, with values in the interval $e_e, e_p \in [[0, 100]]$. The parameter $t$ denotes the number of time steps until the game is finished.
+
+The \emph{gain}, used for selecting the best individuals after creating all generations, is a simplified fitness functions, not taking into account any weights or the time. The equation goes as follows:
+\begin{equation}
+\label{gain}
+    \textit{gain} = e_p - e_e
+\end{equation}

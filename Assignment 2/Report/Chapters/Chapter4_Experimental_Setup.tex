@@ -1,0 +1,46 @@
+\section{Experimental Setup}
+
+In this selection, mutation, crossover and selection algorithms used will be explained in more detail. The DEAP framework \cite{DEAP_JMLR2012} was used to embed the EAs and provided the parent selection method. The EvoMan framework provided us with a controller class called \emph{demo\_controller}, which uses a neural network to control the agent. The weights of this neural network are the chromosomes of the individuals. Both of our algorithms use a population size of \textit{p }= 100 and a number of generations of \textit{g }= 25.
+
+\subsection{Survivor Selection}
+In our experiment, we aim to evaluate the importance of the balance between diversity and quality by comparing two EAs with different survivor selection methods.
+\\\\
+\noindent\textbf{\underline{Algorithm 1: Comma Strategy}}
+
+The survivor selection in our first algorithm is the \emph{comma strategy}, or $\left(\mu,\lambda\right)\text{-strategy}$. In this strategy, $\mu$ individuals create $\lambda$ offspring. In our experiments we used $\mu = p = 100$ and $\lambda = 200$. That way we had twice the amount of offspring as the number of our population. For selecting the 100 offspring that were to replace our old population, we used a simple \emph{select best} mechanism, where we took the fittest half of the offspring.
+\\\\
+\noindent\textbf{\underline{Algorithm 2: Age-based selection}}
+
+For our second algorithm, we used the \emph{age-based} selection. In it, we created the same amount of offspring as we had in our initial population, and replaced the whole population with all newly created offspring.
+
+\subsection{Parent Selection}
+
+For the parent selection, the \emph{Tournament Selection} method from DEAP was used with a tournsize of $t=20$. Hence, 20 random individuals from the current population are chosen to compete in a tournament against each other. The best individual with the highest fitness value out of the 20, wins the competition and is selected to be one of the parents to create offspring for the next generation. A high tournament size potentially leads to a decline of diversity, since the best performing individuals are selected too often. However, a low tournament size could harm the quality and diversity of the next population, since it increases the randomness in which individuals will be selected. For the experiment, different test runs indicated that a tournament size of 20 is a fitting middle ground for a population of 100 individuals.
+
+\subsection{Initialization}
+
+For the initialization of the population, the high performing individuals, classified as beating five or more enemies in the previous runs, were seeded in the initial population. With this method, we aimed to give our population a "head-start" and further improve the quality of genotypes in following runs. Moreover, every gene in the genotype of the other individuals consists of a random float number in the range $x_i \in [-1, 1]$.
+
+\subsection{Crossover}
+In both EAs, the method \emph{Multi-parent uniform crossover} was used. Each chromosome is copied from one of the parents, with an equal probability for each child. We used the number of four parents for the crossover to keep balance between the integrity and the diversity of the chromosomes.
+\subsection{Mutation Algorithm}
+As a mutation method, self-adaptive mutation with n $\sigma$’s was used for both EAs. Every individual has $n$ additional parameters $\sigma_1 \ldots \sigma_n$, one for each chromosome $x_1 \ldots x_n$. The $\sigma$ values are mutated first in each mutation step, as seen in equation (\ref{sigma_equation}). Then, the corresponding $x$ values are changed according to their sigma values as shown in equation (\ref{chromosome_equation}). 
+
+\begin{equation}
+	\label{sigma_equation}
+	\sigma_{i}^{\prime} =\sigma_{i} \cdot e^{\tau^{\prime} \cdot N(0,1)+\tau \cdot N_{i}(0,1)}
+\end{equation}
+\begin{equation}
+	\label{chromosome_equation}
+	x_{i}^{\prime} =x_{i}+\sigma_{i}^{\prime} \cdot N_{i}(0,1)
+\end{equation}
+
+In eq. (\ref{sigma_equation}), the constant parameters $\tau$ and $\tau'$ represent the learning rates, with $\tau$ being a coordinate wise learning rate and $\tau'$ a general one. The values are set to:
+
+\begin{equation*}
+\tau^{\prime} &= 1 / \sqrt{2 n}, \;\;\;\;\;\;\;\;
+\tau &= 1 / \sqrt{2 \sqrt{n}}
+\end{equation*}
+
+$N(0,1)$ represents a draw from the normal distribution around the center $0$ and a standard deviation of 1. Moreover, we aimed to set the minimum \emph{expected} change of the old chromosome to at least 0.05 in either direction and, therefore, every sigma value has a lower bound of $\epsilon_0 = 0.05$. These bound values are additionally used for the random sigma initialisation, with each value being chosen from an interval out of $\sigma_i \in [\epsilon_0, 2\cdot\epsilon_0]$. The sigma values are given to the offspring in the same way as the chromosomes are.
+

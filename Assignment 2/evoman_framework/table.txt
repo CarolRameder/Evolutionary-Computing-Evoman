@@ -1,0 +1,8 @@
+FightResultsAverages(enemy=1, enemy_life_average=80.0, player_life_average=0.0), 
+FightResultsAverages(enemy=2, enemy_life_average=0.0, player_life_average=57.2), 
+FightResultsAverages(enemy=3, enemy_life_average=68.0, player_life_average=0.0), 
+FightResultsAverages(enemy=4, enemy_life_average=62.0, player_life_average=0.0), 
+FightResultsAverages(enemy=5, enemy_life_average=0.0, player_life_average=39.04000000000029), 
+FightResultsAverages(enemy=6, enemy_life_average=24.0, player_life_average=10.320000000000146), 
+FightResultsAverages(enemy=7, enemy_life_average=18.0, player_life_average=24.400000000000134), 
+FightResultsAverages(enemy=8, enemy_life_average=0.0, player_life_average=52.7200000000003)]

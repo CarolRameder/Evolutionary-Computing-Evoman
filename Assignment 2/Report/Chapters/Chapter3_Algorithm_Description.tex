@@ -1,0 +1,47 @@
+\section{Algorithm Description}
+
+In order to test our research question, two different EAs were used to train the a generalist AI agent in the EvoMan framework. The EAs were used to optimize the single-layer neural network of the agent, where the weights represent the genotype of each individual. The different genotypes are different configurations of the model and can be evaluated based on the fitness performance of the agent during the game. Both EAs use all standard methods of evolution. The different genotypes, or individuals, are evaluated on \emph{fitness} to measure their quality. The fitness function used in this experiment was provided by the framework and can be described as: 
+\begin{equation}
+\label{fitness}
+\textit { fitness }=0.9 *\left(100-e_{e}\right)+0.1 * e_{p}-\log(t)
+\end{equation}
+In the stated above equation, $e_e$ represents the enemy's energy and $e_p$ the player's energy, with values in the interval $e_e, e_p \in [[0, 100]]$. The parameter $t$ denotes the number of time steps until the game is finished.
+
+The \emph{gain}, used for selecting the best individuals after creating all generations, is a simplified fitness function, not taking into account any weights or the time. The equation goes as follows:
+\begin{equation}
+\label{gain}
+    \textit{gain} = e_p - e_e
+\end{equation}
+Based on \emph{fitness}, parents are selected to create the next generation. Therefore, the optimal features are propagated to the next generation, most likely leading to an improvement.
+
+Crossover represents the reproduction process, in which the genetic information of two or more individuals is combined and the resulted offspring represent the population of the next generation.
+
+Furthermore, mutation stands for random changes in the genetic material of the offspring. In our experiment, we use self-adaptive mutation as a mutation method. The key concept is that the mutation step sizes are not set by the user; rather the σ parameters co-evolve with the solutions. The crossover and mutation operators are used to increase the diversity of a population. By applying these methods, the search space of our problem is well overall explored. 
+
+Two survivor selection methods are applied in our EAs for improving the elitism of our solutions, those being comma strategy survivor selection and age-based selection. In the following of the paper, we refer to the EA using comma strategy survivor selection as EA1 and the EA using age-based replacement survivor selection as EA2.
+
+For the parent selection, a fitness-based method is used in order to find high-quality parents for improving offspring. 
+
+In the main loop of the algorithm, for each new generation, we select the parents for breeding. Crossover produces the offspring that are further selected or not for the next generation depending on the used method. Mutation diversifies the offspring, which are further evaluated according to their fitness and become the population of the next generation. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

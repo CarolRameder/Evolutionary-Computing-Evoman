@@ -1,0 +1,44 @@
+\section{Experimental Setup}
+In this setup section, the individual mutation, crossover and selection algorithms used will be explained in more detail. 
+The Gaussian mutation and the selection algorithm are taken from the DEAP framework \cite{DEAP_JMLR2012}. We refer to the evolutionary algorithm using the Gaussian mutation as EA1 and the algorithm using the self-adaptive mutation as EA2.
+\subsection{Mutation Algorithm}
+Both of our algorithms use a population size of $p = 100$ and a generation size of $g = 30$. In accordance to our research question, the only specific method changed in our two EAs is the mutation method.
+The EvoMan framework provided us with a controller class calls \emph{demo\_controller}, which uses a neural network to control the agent. The weights of this neural network are the chromosomes of the individuals. 
+\\\\
+\noindent\textbf{\underline{Algorithm 1: Gaussian Mutation}}
+
+For each chromosome, a value is drawn using a Gaussian distribution, with the mean $\mu = 0.0$ and with a standard deviation $\sigma = 0.1$. This value is then added to the chromosome with a probability of $\text{indpb} = 0.1$. The mean of the mutation was to set to zero so that the mutation is able to alter the old chromosome value in both directions with an equal probability. With a standard deviation of 0.1 the random draw from the Gaussian distribution will have a standard deviation of $\sqrt{0.1} \approx 0.32$, which in the test runs together with a mutation chance of 10\% led to the best results.
+\\\\
+\textbf{\underline{Algorithm 2: Uncorrelated mutation with n $\sigma$’s}}
+
+In the second mutation algorithm, each Individual has $n$ additional parameters $\sigma_1 \ldots \sigma_n$, one for each chromosome $x_1 \ldots x_n$. In each mutation step, the sigma values are updated first, as seen in equation (\ref{sigma_equation}), and the corresponding chromosome $x$ values are mutated in relation to their sigma values equation (\ref{chromosome_equation}).
+
+\begin{equation}
+	\label{sigma_equation}
+	\sigma_{i}^{\prime} =\sigma_{i} \cdot e^{\tau^{\prime} \cdot N(0,1)+\tau \cdot N_{i}(0,1)}
+\end{equation}
+\begin{equation}
+	\label{chromosome_equation}
+	x_{i}^{\prime} =x_{i}+\sigma_{i}^{\prime} \cdot N_{i}(0,1)
+\end{equation}
+\\
+The constant parameters $\tau$ and $\tau'$ of equation (\ref{sigma_equation}) represent learning rates, with $\tau$ being a coordinate wise learning rate and $\tau'$ a general one. The values are set to:
+
+\begin{center}
+\begin{align*}
+\tau^{\prime} &= 1 / \sqrt{2 n} \\
+\tau &= 1 / \sqrt{2 \sqrt{n}}
+\end{align*}
+\end{center}
+$N(0,1)$ represents a draw from the normal distribution around the center $0$ and a standard deviation of 1.
+Every sigma value has a lower bound of $\epsilon_0 = 0.05$, so that the minimum \emph{expected} change of the old chromosome is at least 0.05 in either direction. We also use those bound values for the random initialization of the sigma values, with each value being randomly chosen form the interval $\sigma_i \in [\epsilon_0, 2\epsilon_0]$. The independent sigma parameters are passed on to the offspring the same way the chromosomes are. 
+
+\subsection{Crossover}
+
+The crossover used in both EAs is the \emph{Multi-parent uniform crossover}, with four parents creating four offspring. In this uniform crossover, four of the selected parents are taken. For each child, each chromosome is copied from one of the four parents with an equal probability. The number of parents is set to four, to keep balance between the integrity and the diversity of the chromosomes.
+
+\subsection{Selection}
+For the selection of the mating parents, a \emph{Tournament Selection} with a size of $\text{tournsize} = 20$ is used. In this selection, 20 out of the 100 individuals are selected at random. The best individual based on the evaluated fitness value is then chosen to be one of the mating parents. With a tournament size of 20, we aim to achieve a favorable mix of diversity and excellence. 
+A too large tournament size yields the risk that the best performing individuals will be selected too often, which could damage the diversity.
+On the other hand, a too small tournament size might increase the randomness which individuals will be selected for mating.
+This could lead to good individuals being ruled out and bad ones creating the new offspring. The test runs indicate that 20 is a good middle ground with a general population size of 100.

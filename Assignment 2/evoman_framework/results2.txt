@@ -1,0 +1,6 @@
+Most enemies beaten: 1 with 4.0
+Highest avg player life: 1 with 187.6800000000009
+Highest avg time: 0 with 1820.8
+Highest avg gain: 1 with -58.319999999999126
+[IndividualStatsTwo(individual_idx=0, enemies_beaten=3.4, player_life_avg=127.72000000000067, time_avg=1820.8, gain_avg=-148.27999999999935), 
+IndividualStatsTwo(individual_idx=1, enemies_beaten=4.0, player_life_avg=187.6800000000009, time_avg=1650.8, gain_avg=-58.319999999999126)]

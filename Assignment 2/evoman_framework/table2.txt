@@ -1,0 +1,8 @@
+[{'enemy': 1, 'enemy_life_average': 80.0, 'player_life_average': 0.0}, 
+{'enemy': 2, 'enemy_life_average': 0.0, 'player_life_average': 57.2}, 
+{'enemy': 3, 'enemy_life_average': 60.0, 'player_life_average': 0.0}, 
+{'enemy': 4, 'enemy_life_average': 64.0, 'player_life_average': 0.0}, 
+{'enemy': 5, 'enemy_life_average': 0.0, 'player_life_average': 37.00000000000027}, 
+{'enemy': 6, 'enemy_life_average': 24.0, 'player_life_average': 10.320000000000148}, 
+{'enemy': 7, 'enemy_life_average': 26.0, 'player_life_average': 0.0}, 
+{'enemy': 8, 'enemy_life_average': 0.0, 'player_life_average': 45.88000000000029}]
